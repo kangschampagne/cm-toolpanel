@@ -1,57 +1,55 @@
 
 (function (mod) {
   if (typeof exports == "object" && typeof module == "object") // CommonJS
-      mod(require("codemirror"));
+      mod(require("codemirror"))
   else if (typeof define == "function" && define.amd) // AMD
-      define(["codemirror"], mod);
+      define(["codemirror"], mod)
   else // Plain browser env
-      mod(CodeMirror);
+      mod(CodeMirror)
 })((CodeMirror) => {
   let createPanel = (cm, temp, position) => {
     let el = document.createElement('div')
-    el.className = 'cm-toolpenl-dialog'
-    
-    if (typeof temp === 'string') {
-      el.innerHTML = temp
-    } else {
-      el.appendChild(temp)
-    }
+    el.className = 'cm-toolpanel-dialog'
 
+    if (typeof temp == 'string') {
+        el.innerHTML = temp
+    } else {
+        el.appendChild(temp)
+    }
     let panel = cm.addPanel(el, {
-      position: position
+        position: position ? position.bottom ? 'bottom' : 'top' : 'top'
     })
     return panel
   }
 
   let closePanel = (cm) => {
-    let state = cm.state.toolpanelDialog
-    if (!state || !state.current) return
+      let state = cm.state.advancedDialog
+      if (!state || !state.current) {
+          return
+      }
 
-    state.current.panel.clear()
+      state.current.panel.clear()
 
-    if (state.current.onClose) {
-      state.current.onClose(state.current.panel.node)
-      state.current = null
-      delete state.current;
+      if (state.current.onClose) state.current.onClose(state.current.panel.node)
+      delete state.current
       cm.focus()
-    }
   }
 
-  CodeMirror.defineExtension('openToolpanelDialog', (temp, options) => {
-    if (!this.addPanel) return
-    if (!options) options = {}
-    if (!this.state.toolpanelDialog) this.state.toolpanelDialog = {}
+  CodeMirror.defineExtension('openToolpanelDialog', function (temp, options) {
+      if (!this.addPanel) throw `Panel.js addon.`
+      if (!options) options = {}
+      if (!this.state.advancedDialog) this.state.advancedDialog = {}
 
-    if (this.state.toolpanelDialog.current) {
-      closePanel(this)
-    }
+      if (this.state.advancedDialog.current) closePanel(this)
 
-    let panel = createPanel(this, temp, options.position)
-    this.state.toolpanelDialog.current = {
-      panel: panel,
-      onClose: options.onClose
-    }
+      let panel = createPanel(this, temp, options.bottom)
+      this.state.advancedDialog.current = {
+          panel: panel,
+          onClose: options.onClose
+      }
 
-    return () => closePanel(this)
+      return () => {
+          closePanel(this)
+      }
   })
 })

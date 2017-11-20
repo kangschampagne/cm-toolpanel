@@ -10,7 +10,7 @@ function resolve(dir) {
 
 module.exports = {
     entry: {
-        app: './src/index.js'
+        app: './src/cmtoolpanel.js'
     },
     output: {
         path: resolve('dist'),
@@ -47,17 +47,17 @@ module.exports = {
         new webpack.DefinePlugin({
             'process.env.NODE_ENV': '"production"'
         }),
-        new webpack.optimize.UglifyJsPlugin({
-            compress: {
-                warnings: false
-            }
-        }),
-        new CompressionPlugin({
-            asset: '[path].gz[query]',
-            algorithm: 'gzip',
-            test: /\.(js|css)$/,
-            threshold: 10240,
-            minRatio: 0.8
-        })
+        // new webpack.optimize.UglifyJsPlugin({
+        //     compress: {
+        //         warnings: false
+        //     }
+        // }),
+        // new CompressionPlugin({
+        //     asset: '[path].gz[query]',
+        //     algorithm: 'gzip',
+        //     test: /\.(js|css)$/,
+        //     threshold: 10240,
+        //     minRatio: 0.8
+        // })
     ]
 };
