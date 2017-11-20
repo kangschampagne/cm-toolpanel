@@ -27,6 +27,9 @@ opts: {                            // 可选参数
 3.栗子
 
 ```javascript
-editor.openToolpanelDialog('<div class="omelet-cm-toolpanel"><p>这是一个 ToolPanel.</p></div>')
+editor.openToolpanelDialog('<div class="omelet-cm-toolpanel"><p>这是一个 ToolPanel.</p></div>', {
+  position: 'top'
+})
 ```
+
 ![Alt text](./example/example.png)
